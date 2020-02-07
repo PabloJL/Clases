@@ -1,61 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app2/main_content.dart';
 String _nombre = "Alejandro";
+
 void main() => runApp(
   MaterialApp(
     title: "Flutter Application",
-    home: Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.red,
-        leading: FlutterLogo(),
-        title: Text("Flutter App"),
-      ),
-      body: Stack(
-        //mainAxisAlignment: MainAxisAlignment.center,
-        //crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Container(
-            width: 100,
-            height: 100,
-            color: Colors.blue,
-            /*child: Text(
-              "Enjoy it!!",
-              style: TextStyle(
-                  fontSize: 36.0,
-                  color: Colors.amber
-              ),
-            ),*/
-          ),
-          Container(
-            width: 90,
-            height: 90,
-            color: Colors.red,
-            /*child: Text(
-              "Enjoy it!!",
-              style: TextStyle(
-                  fontSize: 36.0,
-                  color: Colors.amber
-              ),
-            ),*/
-          ),
-          Container(
-            width: 80,
-            height: 80,
-            color: Colors.green,
-            /*child: Text(
-              "Enjoy it!!",
-              style: TextStyle(
-                  fontSize: 36.0,
-                  color: Colors.amber
-              ),
-            ),*/
-          ),
-        ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: (){},
-      ),
-    ),
+    home: MainContent(),
   )
 );
 
