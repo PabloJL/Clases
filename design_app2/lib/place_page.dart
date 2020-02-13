@@ -74,22 +74,49 @@ class PlacePage extends StatelessWidget{
            softWrap: true,
       ),
     );
+    Widget bodyPortrait = ListView(
+      children: <Widget>[
+        Image.asset(
+          'assets/img/header.jpg',
+          height: 240,
+          width: MediaQuery.of(context).size.width,
+          fit: BoxFit.cover,
+        ),
+        title,
+        buttons,
+        description
+      ],
+    );
+    Widget bodyLandscape = Row(
+      children: <Widget>[
+        Image.asset(
+          'assets/img/header.jpg',
+          height: MediaQuery.of(context).size.height,
+          width: 320,
+          fit: BoxFit.cover,
+        ),
+        Expanded(
+          child: ListView(
+            children: <Widget>[
+              title,
+              buttons,
+              description
+            ],
+          ),
+        )
+      ],
+    );
+
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Places"),
       ),
-      body: ListView(
-        children: <Widget>[
-          Image.asset(
-            'assets/img/header.jpg',
-            height: 240,
-            width: MediaQuery.of(context).size.width,
-            fit: BoxFit.cover,
-          ),
-          title,
-          buttons,
-          description
-        ],
+      body: OrientationBuilder(
+        builder: (context, orientation){
+          return
+            orientation == Orientation.portrait ? bodyPortrait : bodyLandscape;
+        },
       ),
     );
   }
