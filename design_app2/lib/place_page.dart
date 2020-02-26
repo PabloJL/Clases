@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 
-class PlacePage extends StatelessWidget{
+class PlacePage extends StatefulWidget{
+
+  @override
+  State<StatefulWidget> createState()=> new PlacePageState();
+
+}
+class PlacePageState extends State<PlacePage>{
+  bool _liked = false;
 
   @override
   Widget build(BuildContext context) {
-
     Widget title = Container(
       padding: EdgeInsets.all(32),
       child: Row(
@@ -31,7 +37,7 @@ class PlacePage extends StatelessWidget{
               ],
             )
           ),
-          Icon(Icons.star, color: Colors.red,),
+          Icon(_liked ? Icons.favorite : Icons.favorite_border, color: Colors.red,),
           Text("41")
         ],
       )
@@ -118,6 +124,15 @@ class PlacePage extends StatelessWidget{
             orientation == Orientation.portrait ? bodyPortrait : bodyLandscape;
         },
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: (){
+          setState(() {
+            _liked = !_liked;
+          });
+        },
+          backgroundColor: Colors.red,
+        child: Icon(_liked ? Icons.favorite_border : Icons.favorite, color: Colors.white)
+      ),
     );
   }
 
@@ -133,4 +148,5 @@ class PlacePage extends StatelessWidget{
       ],
     );
   }
+
 }

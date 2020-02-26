@@ -16,7 +16,7 @@ class LoginPage extends StatelessWidget{
           children: <Widget>[
             Padding(
               padding: EdgeInsets.only(top:60),
-              child: FlutterLogo(size: 100,)
+              child: FlutterLogo(size: 100)
             ),
             Padding(
               padding: EdgeInsets.only(top:16),
