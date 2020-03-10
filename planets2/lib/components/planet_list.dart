@@ -1,9 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:planets2/components/planet_card.dart';
 import 'package:planets2/models/planet.dart';
 
 class PlanetList extends StatelessWidget {
-  List<Planet> _planets = [
+  /*List<Planet> _planets = [
     const Planet(
         id: "1",
         name: "Mars",
@@ -54,23 +55,28 @@ class PlanetList extends StatelessWidget {
         image: "assets/img/mercury.png",
         picture: "https://c1.staticflickr.com/9/8105/8497927473_2845ae671e_b.jpg"
     ),
-  ];
+  ];*/
 
   @override
   Widget build(BuildContext context) {
+    /*Firestore.instance.collection("mensajes").document("msj1").setData({
+      "mensaje": "Hola Mundo!"
+    });*/
     return Expanded(
       child: Container(
         color: Color(0xFF333366),
-        child: ListView(
-          children: <Widget>[
-            PlanetCard(planet: _planets[0]),
-            PlanetCard(planet: _planets[1]),
-            PlanetCard(planet: _planets[2]),
-            PlanetCard(planet: _planets[3]),
-            PlanetCard(planet: _planets[4]),
-          ],
-        ),
+        child: StreamBuilder(
+          stream: Firestore.instance.collection("planets").snapshots(),
+          builder: (context, AsyncSnapshot<QuerySnapshot> snapshot){
+            return ListView.builder(
+              itemBuilder: (context, index) => new PlanetCard(planet: Planet.fromFB(snapshot.data.documents[index])),
+              itemCount: snapshot.data.documents.length,
+            );
+          },
+        )
       )
     );
   }
 }
+
+/*,*/

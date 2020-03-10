@@ -23,7 +23,7 @@ class PlanetCard extends StatelessWidget {
         fontSize: 12.0
     );
     Widget planetCardContent = new Container(
-      margin: new EdgeInsets.fromLTRB(76.0, 16.0, 16.0, 8.0),
+      margin: new EdgeInsets.fromLTRB(76.0, 8.0, 16.0, 8.0),
       constraints: new BoxConstraints.expand(),
       child: new Column(
         crossAxisAlignment: CrossAxisAlignment.start,
