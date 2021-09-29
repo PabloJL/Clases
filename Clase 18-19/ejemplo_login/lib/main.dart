@@ -15,7 +15,9 @@ class MyApp extends StatelessWidget {
       title: 'Ejemplo Login',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primaryColor: Color(0xFF2661FA),
+        scaffoldBackgroundColor: Colors.white,
+        visualDensity: VisualDensity.adaptivePlatformDensity
       ),
       home: LoginPage()
     );
