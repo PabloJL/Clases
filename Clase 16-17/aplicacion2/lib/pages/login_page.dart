@@ -55,6 +55,7 @@ class _LoginPageState extends State<LoginPage> {
                   validator: (value)=> value.toString().isEmpty ? "Usuario es obligatorio":null,
                   onSaved: (value)=> this._usuario = value.toString(),
                   decoration: InputDecoration(
+                      prefixIcon: Icon(Icons.email),
                     labelText: "Usuario"
                   ),
                 )
@@ -66,10 +67,12 @@ class _LoginPageState extends State<LoginPage> {
                   alignment: Alignment.center,
                   margin: EdgeInsets.symmetric(horizontal: 40),
                   child: TextFormField(
+
                     obscureText: true,
                     validator: (value)=> value.toString().isEmpty ? "Contraseña es obligatoria":null,
                     onSaved: (value)=> this._contrasena = value.toString(),
                     decoration: InputDecoration(
+                        prefixIcon: Icon(Icons.lock),
                         labelText: "Contraseña"
                     ),
                   )
@@ -95,8 +98,27 @@ class _LoginPageState extends State<LoginPage> {
                   onPressed: (){
                     final form = _formKey.currentState;
                     if(form!.validate()){
-                      print("Valido");
+                      //print("Valido");
                       form.save();
+                      if(_usuario=="alejandro" && _contrasena=="123456"){
+                        //Mandar a HOME
+                      }else{
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              backgroundColor: Colors.red,
+                              content: Row(
+                                children: [
+                                  Icon(Icons.error, color: Colors.white,),
+                                  SizedBox(width: 20,),
+                                  Expanded(
+                                    child: Text("Usuario y/o contraseña incorrectos!"),
+                                  )
+                                ],
+                              ),
+                              duration: Duration(seconds: 2),
+                            )
+                        );
+                      }
                     }else{
                       print("no válido");
                     }
