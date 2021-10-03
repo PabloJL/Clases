@@ -1,13 +1,17 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'dart:async';
+import 'dart:typed_data';
+
 import 'package:aplicacion2/components/background.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:fzregex/utils/pattern.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:fzregex/fzregex.dart';
 import 'login_page.dart';
 
 class SignupPage extends StatefulWidget {
@@ -27,6 +31,7 @@ class _SignupPageState extends State<SignupPage> {
   String _usuario = "";
   String _contrasena = "";
   String _contrasenaR = "";
+  String _email = "";
   var _formKey = GlobalKey<FormState>();
 
   @override
@@ -37,6 +42,14 @@ class _SignupPageState extends State<SignupPage> {
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
     ]);
+  }
+
+  _setState() async {
+    final SharedPreferences pref = await SharedPreferences.getInstance();
+    pref.setString('nombre', _nombre);
+    pref.setString('email', _email);
+    pref.setString('usuario', _usuario);
+    pref.setString('contraseña', _contrasena);
   }
 
   // void _populateFields() async {
@@ -58,11 +71,14 @@ class _SignupPageState extends State<SignupPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+                SizedBox(
+                height: size.height * 0.03,
+              ),
               Container(
                 alignment: Alignment.centerLeft,
                 padding: EdgeInsets.symmetric(horizontal: 40),
                 child: Text(
-                  "Signup",
+                  "SIGNUP",
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
                       color: Color(0xFF2661FA),
@@ -71,7 +87,7 @@ class _SignupPageState extends State<SignupPage> {
                 ),
               ),
               SizedBox(
-                height: size.height * 0.09,
+                height: size.height * 0.03,
               ),
 
               //Nombre
@@ -100,7 +116,23 @@ class _SignupPageState extends State<SignupPage> {
                         : null,
                     onSaved: (value) => this._usuario = value.toString(),
                     decoration: InputDecoration(
-                        prefixIcon: Icon(Icons.email), labelText: "Usuario"),
+                        prefixIcon: Icon(Icons.people),
+                        labelText: "Usuario"),
+                  )),
+              SizedBox(
+                height: size.height * 0.03,
+              ),
+
+              Container(
+                  alignment: Alignment.center,
+                  margin: EdgeInsets.symmetric(horizontal: 40),
+                  child: TextFormField(
+                    validator: (value) => value.toString().isEmpty
+                        ? "Email es obligatorio"
+                        : null,
+                    onSaved: (value) => this._email = value.toString(),
+                    decoration: InputDecoration(
+                        prefixIcon: Icon(Icons.email), labelText: "Email"),
                   )),
               SizedBox(
                 height: size.height * 0.03,
@@ -133,7 +165,7 @@ class _SignupPageState extends State<SignupPage> {
                         value.toString().isEmpty ? "Obligatoria" : null,
                     onSaved: (value) => this._contrasenaR = value.toString(),
                     decoration: InputDecoration(
-                        prefixIcon: Icon(Icons.lock),
+                        prefixIcon: Icon(Icons.lock_clock_sharp),
                         labelText: "Repite contraseña"),
                   )),
               Container(
@@ -152,17 +184,18 @@ class _SignupPageState extends State<SignupPage> {
                 alignment: Alignment.centerRight,
                 margin: EdgeInsets.symmetric(horizontal: 40, vertical: 10),
                 child: ElevatedButton(
-                    onPressed: () async {
-                      final SharedPreferences pref =
-                          await SharedPreferences.getInstance();
-                      pref.setString('nombre', _nombre);
-                      pref.setString('usuario', _usuario);
-                      pref.setString('contraseña', _contrasena);
+                    onPressed: () {
+                      _setState();
+                      // final SharedPreferences pref =
+                      //     await SharedPreferences.getInstance();
+                      // pref.setString('nombre', _nombre);
+                      // pref.setString('usuario', _usuario);
+                      // pref.setString('contraseña', _contrasena);
                       final form = _formKey.currentState;
                       if (form!.validate()) {
                         //print("Valido");
                         form.save();
-                       if (_contrasena != _contrasenaR) {
+                        if (_contrasena != _contrasenaR) {
                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                             backgroundColor: Colors.red,
                             content: Row(
@@ -175,12 +208,59 @@ class _SignupPageState extends State<SignupPage> {
                                   width: 20,
                                 ),
                                 Expanded(
-                                  child: Text("Passwords are not the same"),
+                                  child: Text("Las contraseñas no son las mismas"),
                                 )
                               ],
                             ),
                             duration: Duration(seconds: 2),
                           ));
+                        }else if(Fzregex.hasMatch(_email, FzPattern.email) == false){
+                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            backgroundColor: Colors.red,
+                            content: Row(
+                              children: [
+                                Icon(
+                                  Icons.error,
+                                  color: Colors.white,
+                                ),
+                                SizedBox(
+                                  width: 20,
+                                ),
+                                Expanded(
+                                  child: Text("El formato del email no es correcto"),
+                                )
+                              ],
+                            ),
+                            duration: Duration(seconds: 2),
+                          ));
+                        } 
+                        else {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            backgroundColor: Colors.green,
+                            content: Row(
+                              children: [
+                                Icon(
+                                  Icons.check,
+                                  color: Colors.white,
+                                ),
+                                SizedBox(
+                                  width: 20,
+                                ),
+                                Expanded(
+                                  child:
+                                      Text("Registo completado exitosamente"),
+                                )
+                              ],
+                            ),
+                            duration: Duration(seconds: 2),
+                          ));
+
+                          Timer(Duration(seconds: 1), () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => LoginPage()));
+                          });
                         }
                       } else {
                         print("no válido");

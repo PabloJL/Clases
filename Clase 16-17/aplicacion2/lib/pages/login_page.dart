@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, unnecessary_this, prefer_final_fields
 
+import 'dart:async';
+
 import 'package:aplicacion2/components/background.dart';
 import 'package:aplicacion2/pages/home.dart';
 import 'package:aplicacion2/pages/signup_page.dart';
@@ -27,7 +29,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
-      _cargarDatos();
+    _cargarDatos();
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
@@ -108,14 +110,13 @@ class _LoginPageState extends State<LoginPage> {
                 margin: EdgeInsets.symmetric(horizontal: 40, vertical: 10),
                 child: ElevatedButton(
                     onPressed: () {
-                    
                       final form = _formKey.currentState;
                       if (form!.validate()) {
                         //print("Valido");
                         form.save();
                         if (_usuario == user && _contrasena == pass) {
                           //Mandar a HOME
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                             backgroundColor: Colors.green,
                             content: Row(
                               children: [
@@ -127,16 +128,18 @@ class _LoginPageState extends State<LoginPage> {
                                   width: 20,
                                 ),
                                 Expanded(
-                                  child: Text(
-                                      "Bienvenido de Vuelta"),
+                                  child: Text("Bienvenido de Vuelta $user"),
                                 )
                               ],
                             ),
                             duration: Duration(seconds: 2),
                           ));
-                           Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => Home()));
-                  
+                          Timer(Duration(seconds: 1), () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Home()));
+                          });
                         } else {
                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                             backgroundColor: Colors.red,
