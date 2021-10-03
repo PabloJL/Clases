@@ -1,6 +1,8 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
+import 'pages/signup_page.dart';
 import 'pages/login_page.dart';
 
 void main() {
